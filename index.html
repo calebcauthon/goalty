@@ -1,5 +1,75 @@
-<canvas id="c" width=1000 height=1000></canvas>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/460/fabric.min.js" integrity="sha512-ybPp3kCrNQXdvTfh99YLIdnajWnQvHuEKDJ+b26mxI9w+pLhnBo3HmNLJ1pEUBFO1Q0bfJxApeqecNbmaV763g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<style>
+  table { border: 1px solid black; border-collapse: collapse; }
+  table td { border: 1px solid #dedede; padding: 5px; }
+
+  tr.player td:hover { background: greenyellow; cursor: pointer; }
+</style>
+
+<div style="float: left;">
+  <canvas id="c" width=1000 height=1000></canvas>
+</div>
+<div style="float: left;">
+  <h3>Players</h3>
+  <div id="scores">
+    <table>
+      <tr v-for="player in players" class="player">
+        <td v-on:click="addToScore(player)">{{ player.name }}</td>
+      </tr>
+    </table>
+    <h3>Scores</h3>
+    <table>
+      <tr>
+        <td>#</td>
+        <td>From</td>
+        <td>To</td>
+      </tr>
+      <tr v-for="(score, index) in scores">
+        <td>{{ index + 1 }}</td>
+        <td>{{ score.from.name }}</td>
+        <td>{{ score.to.name }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<script>
+  var scores = [
+    { from: { name: 'caleb' }, to: { name: 'taylor' } }
+  ];
+
+  var UNKNOWN_PLAYER = { name: '?' };
+  var players = [
+    { name: 'caleb' },
+    { name: 'taylor' }
+  ];
+  new Vue({
+    el: "#scores",
+    data: {
+      scores,
+      players
+    },
+    computed: {
+      compiledMarkdown: function() {
+        return marked(this.input, { sanitize: true });
+      }
+    },
+    methods: {
+      addToScore: player => {
+        var score = scores[scores.length-1];
+        if (score.from == UNKNOWN_PLAYER) {
+          score.from = player;
+        } else if (score.to == UNKNOWN_PLAYER)
+        {
+          score.to = player;
+        }
+      }
+    }
+  });
+</script>
+
 <script type="text/javascript">
   var ONE_YARD = 20; // pixels
 
@@ -84,18 +154,26 @@
       opacity: 0.5,
       selectable: false
     });
-    canvas.add(line);
+    var arrow = drawArrow(start.x, start.y, end.x, end.y);
+    canvas.add(arrow);
 
-    return line;
+    return [line, arrow];
   }
 
-  function removeLine(line) {
-    canvas.remove(line);
+  function removeLine(removables) {
+    if (!removables)
+    {
+      return;
+    }
+    removables.forEach(thisObject => {
+      canvas.remove(thisObject);     
+    });
   }
   
   var start = {};
   var end = {};
   var lastLine;
+
   canvas.on('mouse:down', function(options) {
     start.x = options.e.clientX;
     start.y = options.e.clientY;
@@ -119,7 +197,65 @@
 
     lastLine = drawLine(start, end);
 
+    createScore(lastLine, start, end);
+
     start = {};
     end = {};
   });
+
+  function createScore(line, start, end) {
+    scores.push({
+      from: UNKNOWN_PLAYER,
+      to: UNKNOWN_PLAYER,
+      timestamp: Date.now()
+    });
+  }
+
+  function drawArrow(fromx, fromy, tox, toy) {
+    var angle = Math.atan2(toy - fromy, tox - fromx);
+    var headlen = 15;  // arrow head size
+    tox = tox - (headlen) * Math.cos(angle);
+    toy = toy - (headlen) * Math.sin(angle);
+
+    var points = [
+        {
+          x: fromx,  // start point
+          y: fromy
+        }, {
+          x: fromx - (headlen / 4) * Math.cos(angle - Math.PI / 2),
+          y: fromy - (headlen / 4) * Math.sin(angle - Math.PI / 2)
+        },{
+          x: tox - (headlen / 4) * Math.cos(angle - Math.PI / 2),
+          y: toy - (headlen / 4) * Math.sin(angle - Math.PI / 2)
+        }, {
+          x: tox - (headlen) * Math.cos(angle - Math.PI / 2),
+          y: toy - (headlen) * Math.sin(angle - Math.PI / 2)
+        },{
+          x: tox + (headlen) * Math.cos(angle),  // tip
+          y: toy + (headlen) * Math.sin(angle)
+        }, {
+          x: tox - (headlen) * Math.cos(angle + Math.PI / 2),
+          y: toy - (headlen) * Math.sin(angle + Math.PI / 2)
+        }, {
+          x: tox - (headlen / 4) * Math.cos(angle + Math.PI / 2),
+          y: toy - (headlen / 4) * Math.sin(angle + Math.PI / 2)
+        }, {
+          x: fromx - (headlen / 4) * Math.cos(angle + Math.PI / 2),
+          y: fromy - (headlen / 4) * Math.sin(angle + Math.PI / 2)
+        },{
+          x: fromx,
+          y: fromy
+        }
+    ];
+    var pline = new fabric.Polyline(points, {
+        fill: '#2ce131',
+        stroke: 'black',
+        opacity: 1,
+        strokeWidth: 2,
+        originX: 'left',
+        originY: 'top',
+        selectable: false
+    });
+    return pline;
+  }
 </script>
