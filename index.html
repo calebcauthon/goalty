@@ -1,0 +1,67 @@
+<canvas id="c" width=1000 height=1000></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/460/fabric.min.js" integrity="sha512-ybPp3kCrNQXdvTfh99YLIdnajWnQvHuEKDJ+b26mxI9w+pLhnBo3HmNLJ1pEUBFO1Q0bfJxApeqecNbmaV763g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script type="text/javascript">
+  var ONE_YARD = 20; // pixels
+
+  var canvas = new fabric.Canvas('c');
+  var ORIGIN = { left: 100, top: 10 };
+  var FIELD_BOUNDARY_COLOR = 'black';
+  var FIELD_BOUNDARY_WIDTH = 5;
+  var FIELD_WIDTH = 30 * ONE_YARD; // not to scale
+  var FIELD_LENGTH = 35 * ONE_YARD;
+  var END_ZONE_LENGTH = 10 * ONE_YARD;
+  var FIELD_SIZE = { width: FIELD_WIDTH, height: FIELD_LENGTH };
+  var END_ZONE_SIZE = { width: FIELD_WIDTH, height: END_ZONE_LENGTH };
+
+  var FIELD_LINE = { strokeWidth: FIELD_BOUNDARY_WIDTH, stroke: FIELD_BOUNDARY_COLOR };
+
+  var fieldProper = new fabric.Rect({
+    ...ORIGIN,
+    ...FIELD_LINE,
+    ...FIELD_SIZE,
+    ...{
+      fill: 'white',
+    }
+  });
+
+  var clearZone = new fabric.Rect({
+    ...{ left: ORIGIN.left, top: ORIGIN.top + FIELD_SIZE.height },
+    ...FIELD_LINE,
+    ...END_ZONE_SIZE,
+    ...{
+      fill: 'white',
+    }
+  });
+
+  var HOOP_WIDTH = 15 * ONE_YARD;
+  var HOOP_LENGTH = 9 * ONE_YARD;
+  var KEY_ORIGIN = {
+    ...{ left: fieldProper.left + FIELD_WIDTH / 2 - (HOOP_WIDTH / 2) },
+    ...{ top: fieldProper.top + FIELD_LENGTH - 32 * ONE_YARD},
+  };
+  var key = new fabric.Ellipse({
+    ...KEY_ORIGIN,
+    rx: HOOP_WIDTH / 2,
+    ry: HOOP_LENGTH,
+    fill: '',
+    stroke: 'green',
+    strokeWidth: 3
+  });
+
+  var hoopHider = new fabric.Rect({
+    ...{ left: KEY_ORIGIN.left - 5 },
+    ...{ top: KEY_ORIGIN.top + HOOP_LENGTH },
+    fill: 'white',
+    width: HOOP_WIDTH + 10,
+    height: HOOP_LENGTH + 10
+  });
+
+  var hoopLine = new fabric.Path(`M ${KEY_ORIGIN.left} ${KEY_ORIGIN.top + HOOP_LENGTH} L ${KEY_ORIGIN.left + HOOP_WIDTH} ${KEY_ORIGIN.top + HOOP_LENGTH} z`);
+  hoopLine.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
+
+  canvas.add(fieldProper);
+  canvas.add(clearZone);
+  canvas.add(key);
+  canvas.add(hoopHider);
+  canvas.add(hoopLine);
+</script>
