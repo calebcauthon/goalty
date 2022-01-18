@@ -4,6 +4,8 @@
   var ONE_YARD = 20; // pixels
 
   var canvas = new fabric.Canvas('c');
+  canvas.set('selection', false);
+  canvas.set('hoverCursor', 'pointer');
   var ORIGIN = { left: 100, top: 10 };
   var FIELD_BOUNDARY_COLOR = 'black';
   var FIELD_BOUNDARY_WIDTH = 5;
@@ -21,6 +23,7 @@
     ...FIELD_SIZE,
     ...{
       fill: 'white',
+      selectable: false,
     }
   });
 
@@ -30,6 +33,7 @@
     ...END_ZONE_SIZE,
     ...{
       fill: 'white',
+      selectable: false
     }
   });
 
@@ -45,7 +49,8 @@
     ry: HOOP_LENGTH,
     fill: '',
     stroke: 'green',
-    strokeWidth: 3
+    strokeWidth: 3,
+    selectable: false,
   });
 
   var hoopHider = new fabric.Rect({
@@ -53,15 +58,46 @@
     ...{ top: KEY_ORIGIN.top + HOOP_LENGTH },
     fill: 'white',
     width: HOOP_WIDTH + 10,
-    height: HOOP_LENGTH + 10
+    height: HOOP_LENGTH + 10,
+    selectable: false
   });
 
   var hoopLine = new fabric.Path(`M ${KEY_ORIGIN.left} ${KEY_ORIGIN.top + HOOP_LENGTH} L ${KEY_ORIGIN.left + HOOP_WIDTH} ${KEY_ORIGIN.top + HOOP_LENGTH} z`);
-  hoopLine.set({ fill: 'red', stroke: 'green', opacity: 0.5 });
+  hoopLine.set({
+    fill: 'red',
+    stroke: 'green',
+    opacity: 0.5,
+    selectable: false
+  });
 
   canvas.add(fieldProper);
   canvas.add(clearZone);
   canvas.add(key);
   canvas.add(hoopHider);
   canvas.add(hoopLine);
+
+  function drawLine(start, end) {
+    var line = new fabric.Path(`M ${start.x} ${start.y} L ${end.x} ${end.y} z`);
+    line.set({
+      fill: 'red',
+      stroke: 'green',
+      opacity: 0.5,
+      selectable: false
+    });
+    canvas.add(line);
+  }
+  
+  var start = { x: 0, y: 0 };
+  var end = { x: 0, y: 0 };
+  canvas.on('mouse:down', function(options) {
+    start.x = options.e.clientX;
+    start.y = options.e.clientY;
+  });
+
+  canvas.on('mouse:up', function(options) {
+    end.x = options.e.clientX;
+    end.y = options.e.clientY;
+
+    drawLine(start, end);
+  });
 </script>
