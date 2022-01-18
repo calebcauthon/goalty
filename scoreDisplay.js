@@ -2,8 +2,8 @@ function setupScoreboard() {
   new Vue({
     el: "#scores",
     data: {
-      scores,
-      players
+      scores: scoreController.getScores(),
+      players: playerController.getPlayers()
     },
     computed: {
       compiledMarkdown: function() {
@@ -12,11 +12,10 @@ function setupScoreboard() {
     },
     methods: {
       addToScore: player => {
-        var score = scores[scores.length-1];
-        if (score.from == UNKNOWN_PLAYER) {
+        var score = scoreController.getMostRecentScore();
+        if (score.needsFrom()) {
           score.from = player;
-        } else if (score.to == UNKNOWN_PLAYER)
-        {
+        } else if (score.needsTo()) {
           score.to = player;
         }
       }

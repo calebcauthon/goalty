@@ -33,9 +33,7 @@ function setupLineDrawing() {
   });
 
   function createScore(line, start, end) {
-    scores.push({
-      from: UNKNOWN_PLAYER,
-      to: UNKNOWN_PLAYER,
+    scoreController.addScore({
       timestamp: Date.now()
     });
   }
