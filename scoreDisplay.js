@@ -1,4 +1,5 @@
 var data = {
+  totals: [],
   scores: scoreController.getScores(),
   players: playerController.getPlayers(),
   isEditingScoreFrom: false,
@@ -66,9 +67,9 @@ function setupScoreboard() {
           var score = scoreController.getMostRecentScore();
           scoreHighlighted = score;
           if (score.needsFrom()) {
-            score.from = player;
+            scoreController.setFrom(score, player);
           } else if (score.needsTo()) {
-            score.to = player;
+            scoreController.setTo(score, player);
           }
         }
 

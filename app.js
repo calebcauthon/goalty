@@ -26,6 +26,21 @@ var Score = (data) => {
   return self;
 };
 
+var statsController = {
+  getTotals: scores => {
+    return players.map(player => {
+      var assists = scores.filter(s => s.from.name == player.name).length;
+      var goals = scores.filter(s => s.to.name == player.name).length;
+
+      return {
+        player,
+        goals,
+        assists
+      };
+    });
+  }
+}
+
 var scoreController = {
   getScores: () => scores,
   resetSequenceNumbers: () => {
@@ -40,11 +55,14 @@ var scoreController = {
     scores.splice(index, 1);
     removeLine(score.line);
     scoreController.resetSequenceNumbers(scores);
+
+    data.totals = statsController.getTotals(scoreController.getScores());
   },
   addScore: data => {
     var score = Score(data);
     scores.push(score);
     score.setSequence(scores.length);
+    data.totals = statsController.getTotals(scoreController.getScores());
 
     return score;
   },
@@ -54,9 +72,11 @@ var scoreController = {
   },
   setFrom: (score, player) => {
     score.from = player;
+    data.totals = statsController.getTotals(scoreController.getScores());
   },
   setTo: (score, player) => {
     score.to = player;
+    data.totals = statsController.getTotals(scoreController.getScores());
   }
 };
 

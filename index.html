@@ -63,6 +63,20 @@
 
       </tr>
     </table>
+
+    <h3>Stats</h3>
+    <table>
+      <tr>
+        <td>Name</td>
+        <td>Assists</td>
+        <td>Goals</td>
+      </tr>
+      <tr v-for="row in totals">
+        <td>{{ row.player.name }}</td>
+        <td>{{ row.assists }}</td>
+        <td>{{ row.goals }}</td>
+      </tr>
+    </table>
   </div>
 </div>
 
