@@ -99,6 +99,10 @@ function setupScoreboard() {
       },
       deleteScore: score => {
         scoreController.removeScore(score);
+        scoreController.getScores().forEach(score => {
+          removeLine(score.line);
+          drawScore(score);
+        })
         data.isDeletingScore = false;
         data.scoreToDelete = null;
       },

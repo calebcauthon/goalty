@@ -34,27 +34,38 @@ function setupLineDrawing() {
       return;
     }
 
-    lastLine = drawLine(start, end);
-    createScore(lastLine, start, end);
+    var score = createScore([], start, end);
+    drawScore(score);
+
     lastLine = null;
 
     start = {};
     end = {};
   });
+}
 
-  function createScore(line, start, end) {
-    var score = scoreController.addScore({
-      timestamp: Date.now(),
-      line
-    });
+function drawScore(score) {
+  var line = drawLine(score.lineCoordinates.start, score.lineCoordinates.end);
+  var text = drawNumber(score.lineCoordinates.end, `${score.sequence}`);
+  score.line = line;
+  score.line.push(text);
 
-    line.forEach(target => {
-      target.on('mousedown', () => {
-        data.scoreHighlighted = score;
-        highlightLine(line);
-      });
+  line.forEach(target => {
+    target.on('mousedown', () => {
+      data.scoreHighlighted = score;
+      highlightLine(line);
     });
-  }
+  });
+}
+
+function createScore(line, start, end) {
+  var score = scoreController.addScore({
+    timestamp: Date.now(),
+    line,
+    lineCoordinates: { start, end }
+  });
+
+  return score;
 }
 
 function highlightLine(line) {

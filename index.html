@@ -33,7 +33,7 @@
         v-on:mouseout="unPreHighlightScore(score)"
         v-bind:class="{ highlight: scoreHighlighted == score, prehighlight: preHighlightedScore == score }"
         v-for="(score, index) in scores">
-        <td>{{ index + 1 }}</td>
+        <td>{{ score.sequence }}</td>
         <td
           v-bind:class="{ isBeingEdited: isBeingEditedFrom(score) }"
           v-on:click="beginEditingScoreFrom(score)">{{ score.from.name }}</td>

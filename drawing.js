@@ -141,6 +141,18 @@ function resetlineColor(line) {
   canvas.renderAll();
 }
 
+function drawNumber(point, text) {
+  var textPlacement = new fabric.Text(text, {
+    left: point.x,
+    top: point.y - 40,
+    fill: SCORE_COLOR,
+    selectable: false
+  });
+
+  canvas.add(textPlacement);
+  return textPlacement;
+}
+
 function drawLine(start, end) {
   var line = new fabric.Path(`M ${start.x} ${start.y} L ${end.x} ${end.y} z`);
   line.set({
