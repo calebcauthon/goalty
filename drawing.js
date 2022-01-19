@@ -131,6 +131,7 @@ function setLineColor(line, color) {
   line.forEach(segment => {
     segment.set('fill', color);
   });
+  canvas.renderAll();
 }
 
 function resetlineColor(line) {

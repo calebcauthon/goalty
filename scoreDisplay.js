@@ -64,6 +64,7 @@ function setupScoreboard() {
         }
       },
       beginEditingScoreFrom: score => {
+        highlightLine(score.line);
         data.isEditingScoreFrom = true;
         data.editingScoreFrom = score;        
       },
