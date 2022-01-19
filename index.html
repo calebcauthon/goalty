@@ -24,6 +24,7 @@
         <td>#</td>
         <td>From</td>
         <td>To</td>
+        <td></td>
       </tr>
       <tr
         class="score-row"
@@ -35,6 +36,12 @@
         <td
           v-bind:class="{ isBeingEdited: isBeingEditedTo(score) }"
           v-on:click="beginEditingScoreTo(score)">{{ score.to.name }}</td>
+        <td
+          v-if="isBeingEditedFrom(score) || isBeingEditedTo(score)"
+          class="clickable"
+          v-on:click="cancelEditing(score)">cancel</td>
+        <td
+          v-if="!(isBeingEditedFrom(score) || isBeingEditedTo(score))"></td>
       </tr>
     </table>
   </div>

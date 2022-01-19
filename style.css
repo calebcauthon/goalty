@@ -5,3 +5,5 @@ td.isBeingEdited { background: greenyellow; }
 
 tr.player td:hover { background: greenyellow; cursor: pointer; }
 tr.score-row td:hover { cursor: pointer; }
+
+.clickable { cursor: pointer; color: blue; text-decoration: underline; }

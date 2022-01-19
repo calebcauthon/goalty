@@ -3,6 +3,7 @@ function setupScoreboard() {
     scores: scoreController.getScores(),
     players: playerController.getPlayers(),
     isEditingScoreFrom: false,
+    isEditingScoreTo: false,
     editingScoreFrom: null,
     editingScoreTo: null
   };
@@ -16,6 +17,17 @@ function setupScoreboard() {
       }
     },
     methods: {
+      cancelEditing: score => {
+        if (data.isEditingScoreFrom && data.editingScoreFrom == score) {
+          data.editingScoreFrom = null;
+          data.isEditingScoreFrom = false;
+        }
+
+        if (data.isEditingScoreTo && data.editingScoreTo == score) {
+          data.editingScoreTo = null;
+          data.isEditingScoreTo = false;
+        }
+      },
       isBeingEditedFrom: score => {
         if (data.editingScoreFrom == score) {
           return true;
