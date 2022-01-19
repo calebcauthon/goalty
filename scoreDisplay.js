@@ -115,6 +115,16 @@ function setupScoreboard() {
           data.preHighlightedScore = null;
           resetlineColor(score.line);
         }
+      },
+      hideAllArrows: () => {
+        scoreController.getScores().forEach(score => {
+          hide(score.line);
+        })
+      },
+      showAllArrows: () => {
+        scoreController.getScores().forEach(score => {
+          show(score.line);
+        })
       }
     }
   });

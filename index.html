@@ -13,6 +13,8 @@
 <div style="float: left;">
   <h3>Players</h3>
   <div id="scores">
+    <span class="clickable" v-on:click="hideAllArrows()">hide all</span> |
+    <span class="clickable" v-on:click="showAllArrows()">show all</span>
     <table>
       <tr v-for="player in players" class="player">
         <td v-on:click="addToScore(player)">{{ player.name }}</td>

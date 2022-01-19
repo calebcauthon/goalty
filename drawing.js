@@ -176,3 +176,19 @@ function removeLine(removables) {
     canvas.remove(thisObject);     
   });
 }
+
+function hide(elements) {
+  elements.forEach(el => {
+    el.set('opacity', 0);
+  });
+
+  canvas.renderAll();
+}
+
+function show(elements) {
+  elements.forEach(el => {
+    el.set('opacity', 1);
+  });
+
+  canvas.renderAll();
+}
