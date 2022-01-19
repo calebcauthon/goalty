@@ -25,6 +25,15 @@ function setupLineDrawing() {
     end.y = options.e.clientY;
 
     removeLine(lastLine);
+
+    var length = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
+
+    if (length < 20) {
+      start = {};
+      end = {};
+      return;
+    }
+
     lastLine = drawLine(start, end);
     createScore(lastLine, start, end);
     lastLine = null;
@@ -34,9 +43,23 @@ function setupLineDrawing() {
   });
 
   function createScore(line, start, end) {
-    scoreController.addScore({
+    var score = scoreController.addScore({
       timestamp: Date.now(),
       line
     });
+
+    line.forEach(target => {
+      target.on('mousedown', () => {
+        data.scoreHighlighted = score;
+        highlightLine(line);
+      });
+    });
+  }
+
+  function highlightLine(line) {
+    scoreController.getScores().forEach(thisScore => {
+      resetlineColor(thisScore.line);
+    });
+    setLineColor(line, 'greenyellow');
   }
 }

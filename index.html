@@ -29,6 +29,7 @@
       </tr>
       <tr
         class="score-row"
+        v-bind:class="{ highlight: scoreHighlighted == score }"
         v-for="(score, index) in scores">
         <td>{{ index + 1 }}</td>
         <td

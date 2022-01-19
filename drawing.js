@@ -1,3 +1,5 @@
+var SCORE_COLOR = '#2ce131';
+
 function drawArrow(fromx, fromy, tox, toy) {
   var angle = Math.atan2(toy - fromy, tox - fromx);
   var headlen = 15;  // arrow head size
@@ -35,7 +37,7 @@ function drawArrow(fromx, fromy, tox, toy) {
       }
   ];
   var pline = new fabric.Polyline(points, {
-      fill: '#2ce131',
+      fill: SCORE_COLOR,
       stroke: 'black',
       opacity: 1,
       strokeWidth: 2,
@@ -62,6 +64,8 @@ function drawField() {
   var END_ZONE_SIZE = { width: FIELD_WIDTH, height: END_ZONE_LENGTH };
 
   var FIELD_LINE = { strokeWidth: FIELD_BOUNDARY_WIDTH, stroke: FIELD_BOUNDARY_COLOR };
+
+
 
   var fieldProper = new fabric.Rect({
     ...ORIGIN,
@@ -123,6 +127,17 @@ function drawField() {
   canvas.add(hoopLine);
 }
 
+function setLineColor(line, color) {
+  line.forEach(segment => {
+    segment.set('fill', color);
+  });
+}
+
+function resetlineColor(line) {
+  line.forEach(segment => {
+    segment.set('fill', SCORE_COLOR);
+  });
+}
 
 function drawLine(start, end) {
   var line = new fabric.Path(`M ${start.x} ${start.y} L ${end.x} ${end.y} z`);

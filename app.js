@@ -33,6 +33,8 @@ var scoreController = {
   addScore: data => {
     var score = Score(data);
     scores.push(score);
+
+    return score;
   },
   getMostRecentScore: () => {
     var recentScore = scores[scores.length - 1];

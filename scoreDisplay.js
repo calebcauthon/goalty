@@ -1,15 +1,15 @@
+var data = {
+  scores: scoreController.getScores(),
+  players: playerController.getPlayers(),
+  isEditingScoreFrom: false,
+  isEditingScoreTo: false,
+  editingScoreFrom: null,
+  editingScoreTo: null,
+  isDeletingScore: false,
+  scoreToDelete: null,
+  scoreHighlighted: null
+};
 function setupScoreboard() {
-  var data = {
-    scores: scoreController.getScores(),
-    players: playerController.getPlayers(),
-    isEditingScoreFrom: false,
-    isEditingScoreTo: false,
-    editingScoreFrom: null,
-    editingScoreTo: null,
-    isDeletingScore: false,
-    scoreToDelete: null
-  };
-
   new Vue({
     el: "#scores",
     data,
