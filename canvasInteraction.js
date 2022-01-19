@@ -63,3 +63,7 @@ function highlightLine(line) {
   });
   setLineColor(line, 'greenyellow');
 }
+
+function preHighlightLine(line) {
+  setLineColor(line, 'rgb(39, 26, 155)');
+}

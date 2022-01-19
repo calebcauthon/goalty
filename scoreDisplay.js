@@ -7,7 +7,8 @@ var data = {
   editingScoreTo: null,
   isDeletingScore: false,
   scoreToDelete: null,
-  scoreHighlighted: null
+  scoreHighlighted: null,
+  preHighlightedScore: null
 };
 function setupScoreboard() {
   new Vue({
@@ -33,6 +34,10 @@ function setupScoreboard() {
         if (data.isDeletingScore && data.scoreToDelete == score) {
           data.scoreToDelete = null;
           data.isDeletingScore = false;
+        }
+
+        if (data.scoreHighlighted == score) {
+          data.scoreHighlighted = null;
         }
       },
       isBeingEditedFrom: score => {
@@ -96,6 +101,16 @@ function setupScoreboard() {
         scoreController.removeScore(score);
         data.isDeletingScore = false;
         data.scoreToDelete = null;
+      },
+      preHighlightScore: score => {
+        preHighlightLine(score.line);
+        data.preHighlightedScore = score;
+      },
+      unPreHighlightScore: score => {
+        if (data.preHighlightedScore == score) {
+          data.preHighlightedScore = null;
+          resetlineColor(score.line);
+        }
       }
     }
   });

@@ -6,6 +6,7 @@ td.isBeingEdited { background: greenyellow; }
 tr.player td:hover { background: greenyellow; cursor: pointer; }
 tr.score-row td:hover { cursor: pointer; }
 
-tr.score-row.highlight { background: rgb(154, 182, 113); };
+table tr.score-row.highlight td { background: greenyellow; }
+table tr.score-row.prehighlight td { background: rgb(39, 26, 155); color: white; }
 
 .clickable { cursor: pointer; color: blue; text-decoration: underline; }
