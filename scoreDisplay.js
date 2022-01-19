@@ -46,21 +46,34 @@ function setupScoreboard() {
         }
       },
       addToScore: player => {
+        var scoreHighlighted = null;
         if (data.isEditingScoreFrom) {
+          scoreHighlighted = data.editingScoreFrom
           data.editingScoreFrom.from = player;
           data.isEditingScoreFrom = false;
           data.editingScoreFrom = null;
         } else if (data.isEditingScoreTo) {
+          scoreHighlighted = data.editingScoreTo;
           data.editingScoreTo.to = player;
           data.isEditingScoreTo = false;
           data.editingScoreTo = null;
         } else {
           var score = scoreController.getMostRecentScore();
+          scoreHighlighted = score;
           if (score.needsFrom()) {
             score.from = player;
           } else if (score.needsTo()) {
             score.to = player;
           }
+        }
+
+        if (
+          data.editingScoreFrom != scoreHighlighted &&
+          data.editingScoreTo != scoreHighlighted &&
+          data.scoreToDelete != scoreHighlighted &&
+          data.scoreHighlighted != scoreHighlighted
+        ) {
+          resetlineColor(scoreHighlighted.line);
         }
       },
       beginEditingScoreFrom: score => {

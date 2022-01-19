@@ -61,6 +61,5 @@ function highlightLine(line) {
   scoreController.getScores().forEach(thisScore => {
     resetlineColor(thisScore.line);
   });
-  console.log('line', line);
   setLineColor(line, 'greenyellow');
 }

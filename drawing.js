@@ -138,6 +138,7 @@ function resetlineColor(line) {
   line.forEach(segment => {
     segment.set('fill', SCORE_COLOR);
   });
+  canvas.renderAll();
 }
 
 function drawLine(start, end) {
