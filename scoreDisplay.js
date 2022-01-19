@@ -5,7 +5,9 @@ function setupScoreboard() {
     isEditingScoreFrom: false,
     isEditingScoreTo: false,
     editingScoreFrom: null,
-    editingScoreTo: null
+    editingScoreTo: null,
+    isDeletingScore: false,
+    scoreToDelete: null
   };
 
   new Vue({
@@ -26,6 +28,11 @@ function setupScoreboard() {
         if (data.isEditingScoreTo && data.editingScoreTo == score) {
           data.editingScoreTo = null;
           data.isEditingScoreTo = false;
+        }
+
+        if (data.isDeletingScore && data.scoreToDelete == score) {
+          data.scoreToDelete = null;
+          data.isDeletingScore = false;
         }
       },
       isBeingEditedFrom: score => {
@@ -63,6 +70,18 @@ function setupScoreboard() {
       beginEditingScoreTo: score => {
         data.isEditingScoreTo = true;
         data.editingScoreTo = score;        
+      },
+      preDeleteScore: score => {
+        data.isDeletingScore = true;
+        data.scoreToDelete = score;
+      },
+      isBeingDeleted: score => {
+        return data.isDeletingScore && data.scoreToDelete == score;
+      },
+      deleteScore: score => {
+        scoreController.removeScore(score);
+        data.isDeletingScore = false;
+        data.scoreToDelete = null;
       }
     }
   });

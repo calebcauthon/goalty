@@ -14,6 +14,7 @@ var Score = (data) => {
   };
 
   var self = {
+    line: data.line,
     from: data.from || UNKNOWN_PLAYER,
     to: data.to || UNKNOWN_PLAYER,
     ...methods
@@ -24,6 +25,11 @@ var Score = (data) => {
 
 var scoreController = {
   getScores: () => scores,
+  removeScore: score => {
+    var index = scores.indexOf(score);
+    scores.splice(index, 1);
+    removeLine(score.line);
+  },
   addScore: data => {
     var score = Score(data);
     scores.push(score);

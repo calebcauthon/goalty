@@ -24,9 +24,10 @@ function setupLineDrawing() {
     end.x = options.e.clientX;
     end.y = options.e.clientY;
 
+    removeLine(lastLine);
     lastLine = drawLine(start, end);
-
     createScore(lastLine, start, end);
+    lastLine = null;
 
     start = {};
     end = {};
@@ -34,7 +35,8 @@ function setupLineDrawing() {
 
   function createScore(line, start, end) {
     scoreController.addScore({
-      timestamp: Date.now()
+      timestamp: Date.now(),
+      line
     });
   }
 }
