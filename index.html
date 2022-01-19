@@ -25,10 +25,16 @@
         <td>From</td>
         <td>To</td>
       </tr>
-      <tr v-for="(score, index) in scores">
+      <tr
+        class="score-row"
+        v-for="(score, index) in scores">
         <td>{{ index + 1 }}</td>
-        <td>{{ score.from.name }}</td>
-        <td>{{ score.to.name }}</td>
+        <td
+          v-bind:class="{ isBeingEdited: isBeingEditedFrom(score) }"
+          v-on:click="beginEditingScoreFrom(score)">{{ score.from.name }}</td>
+        <td
+          v-bind:class="{ isBeingEdited: isBeingEditedTo(score) }"
+          v-on:click="beginEditingScoreTo(score)">{{ score.to.name }}</td>
       </tr>
     </table>
   </div>
