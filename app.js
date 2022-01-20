@@ -1,10 +1,24 @@
-var scores = [
-];
+var scores = [];
 
 var UNKNOWN_PLAYER = { name: '?' };
 var players = [
-  { name: 'caleb' },
-  { name: 'taylor' }
+  { name: 'Christian' },
+  { name: 'Caleb' }, 
+  { name: 'PJ' },
+  { name: 'Spencer' },
+  { name: 'PJ' },
+  { name: 'Brock' },
+  { name: 'Jonah' },
+  { name: 'Gabe' },
+  { name: 'Allen' },
+  { name: 'Monty' },
+  { name: 'Karl' },
+  { name: 'Baby T' },
+  { name: 'Taylor H' },
+  { name: 'Joe Young' },
+  { name: 'TR' },
+  { name: 'Rooster' },
+  { name: 'Marcus' }
 ];
 
 var Score = (data) => {
