@@ -27,7 +27,6 @@ function setupLineDrawing() {
     removeLine(lastLine);
 
     var length = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
-
     if (length < 20) {
       start = {};
       end = {};
@@ -38,7 +37,6 @@ function setupLineDrawing() {
     drawScore(score);
 
     lastLine = null;
-
     start = {};
     end = {};
   });
@@ -67,6 +65,7 @@ function createScore(line, start, end) {
 
   return score;
 }
+
 
 function highlightLine(line) {
   scoreController.getScores().forEach(thisScore => {

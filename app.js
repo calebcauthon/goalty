@@ -41,7 +41,7 @@ var Score = (data) => {
 };
 
 var statsController = {
-  getTotals: scores => {
+  getTotals: (scores) => {
     return players.map(player => {
       var assists = scores.filter(s => s.from.name == player.name).length;
       var goals = scores.filter(s => s.to.name == player.name).length;
@@ -49,7 +49,8 @@ var statsController = {
       return {
         player,
         goals,
-        assists
+        assists,
+        //turns
       };
     });
   }
