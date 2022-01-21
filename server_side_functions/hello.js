@@ -6,8 +6,11 @@ exports.handler = async function(event, context) {
   var result = await octokit.request('GET /gists/{gist_id}', {
     gist_id: gist_id
   });
+
+  var playersJson = result['files']['players.json']['content'];
+
   return {
     statusCode: 200,
-    body: JSON.stringify(result),
+    body: playersJson,
   };
 }
