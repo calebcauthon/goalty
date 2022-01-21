@@ -66,12 +66,23 @@ function createScore(line, start, end) {
   return score;
 }
 
+function showLineAsTurnover(line) {
+  setLineColor(line, 'red');
+}
 
 function highlightLine(line) {
   scoreController.getScores().forEach(thisScore => {
-    resetlineColor(thisScore.line);
+    resetLineColor(thisScore);
   });
   setLineColor(line, 'greenyellow');
+}
+
+function resetLineColor(score) {
+  if (score.isTurnover) {
+    setLineColor(score.line, 'red');
+  } else {
+    setLineColor(score.line, SCORE_COLOR);
+  }
 }
 
 function preHighlightLine(line) {

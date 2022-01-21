@@ -11,11 +11,17 @@
   <canvas id="c" width=1000 height=1000></canvas>
 </div>
 <div style="float: left;">
-  <h3>Players</h3>
   <div id="scores">
+    <h3>Players</h3>
     <span class="clickable" v-on:click="hideAllArrows()">hide all</span> |
     <span class="clickable" v-on:click="showAllArrows()">show all</span>
     <table>
+      <tr class="turnover-button">
+        <td v-on:click="convertScoreToTurnover()">TURNOVER</td>
+      </tr>
+      <tr class="score-button">
+        <td v-on:click="convertScoreToScore()">SCORE</td>
+      </tr>
       <tr v-for="player in players" class="player">
         <td v-on:click="addToScore(player)">{{ player.name }}</td>
       </tr>
@@ -33,7 +39,12 @@
         class="score-row"
         v-on:mouseover="preHighlightScore(score)"
         v-on:mouseout="unPreHighlightScore(score)"
-        v-bind:class="{ highlight: scoreHighlighted == score, prehighlight: preHighlightedScore == score }"
+        v-bind:class="{
+          highlight: scoreHighlighted == score,
+          prehighlight: preHighlightedScore == score,
+          score: !score.isTurnover,
+          turnover: score.isTurnover
+        }"
         v-for="(score, index) in scores">
         <td>{{ score.sequence }}</td>
         <td

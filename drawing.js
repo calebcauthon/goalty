@@ -134,13 +134,6 @@ function setLineColor(line, color) {
   canvas.renderAll();
 }
 
-function resetlineColor(line) {
-  line.forEach(segment => {
-    segment.set('fill', SCORE_COLOR);
-  });
-  canvas.renderAll();
-}
-
 function drawNumber(point, text) {
   var textPlacement = new fabric.Text(text, {
     left: point.x,

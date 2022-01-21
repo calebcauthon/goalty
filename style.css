@@ -4,9 +4,13 @@ table td { border: 1px solid #dedede; padding: 5px; }
 td.isBeingEdited { background: greenyellow; }
 
 tr.player td:hover { background: greenyellow; cursor: pointer; }
+tr.turnover-button td:hover { background: rgb(197, 59, 59); color: white; cursor: pointer; }
+tr.score-button td:hover { background: green; color: white; cursor: pointer; }
 tr.score-row td:hover { cursor: pointer; }
 
 table tr.score-row.highlight td { background: greenyellow; }
 table tr.score-row.prehighlight td { background: rgb(39, 26, 155); color: white; }
+table tr.score td:first-child { background: greenyellow; }
+table tr.turnover td:first-child { background: red; color: white; }
 
 .clickable { cursor: pointer; color: blue; text-decoration: underline; }
