@@ -54,6 +54,10 @@ function drawScore(score) {
       highlightLine(line);
     });
   });
+
+  if (score.isTurnover) {
+    showLineAsTurnover(line);
+  }
 }
 
 function createScore(line, start, end) {

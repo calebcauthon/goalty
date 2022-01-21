@@ -54,6 +54,8 @@ function setupScoreboard() {
             scoreController.setScores(result);
             data.scores = scoreController.getScores();
             data.totals = statsController.getTotals(scoreController.getScores());
+
+            data.scores.forEach(score => drawScore(score));
             this.$forceUpdate();
           });
       },
