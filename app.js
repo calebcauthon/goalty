@@ -3,7 +3,12 @@ var scores = [];
 var UNKNOWN_PLAYER = { name: '?' };
 var players = [];
 
-getPlayers().then(players => data.players = players);
+getPlayers()
+  .then(players => data.players = players)
+  .then(() => {
+    players.push({ name: 'add one' });
+    savePlayers(players);
+  });
 
 var Score = (data) => {
   var methods = {

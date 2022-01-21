@@ -11,11 +11,11 @@ function getPlayers() {
   });
 }
 
-function savePlayers() {
+function savePlayers(playerData) {
   return fetch('/.netlify/functions/savePlayers', {
     method: 'POST',
     body: JSON.stringify({
-      "players": players.concat([{ name: 'thing1' }])
+      "players": playerData
     })
   });
 }
