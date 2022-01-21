@@ -14,10 +14,11 @@ function savePlayers(playerData) {
   });
 }
 
-function saveScores(scoreData) {
+function saveScores(gameId, scoreData) {
   return fetch('/.netlify/functions/saveScores', {
     method: 'POST',
     body: JSON.stringify({
+      "gameId": gameId,
       "scores": scoreData
     })
   });

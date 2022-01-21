@@ -41,7 +41,7 @@ function setupScoreboard() {
       save() {
         savePlayers(data.players)
           .then(() => {
-            saveScores(scoreController.getScores());
+            saveScores(GAME_ID, scoreController.getScores());
           });
       },
       cancelEditing: score => {

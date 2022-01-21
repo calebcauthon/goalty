@@ -1,3 +1,4 @@
+var GAME_ID = "game-1";
 var scores = [];
 
 var UNKNOWN_PLAYER = { name: '?' };
@@ -6,7 +7,7 @@ var players = [];
 getPlayers()
   .then(result => {
     players.push(...result.players);
-  });
+  })
 
 var Score = (data) => {
   var methods = {
