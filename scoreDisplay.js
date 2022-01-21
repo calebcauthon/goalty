@@ -89,17 +89,19 @@ function setupScoreboard() {
           return true;
         }
       },
-      convertScoreToTurnover: () => {
+      convertScoreToTurnover() {
         var score = data.editingScoreFrom || data.editingScoreTo || scoreController.getMostRecentScore();
         scoreController.setTurnoverStatus(score, true);
         showLineAsTurnover(score.line);
+        this.save();
       },
-      convertScoreToScore: () => {
+      convertScoreToScore() {
         var score = data.editingScoreFrom || data.editingScoreTo || scoreController.getMostRecentScore();
         scoreController.setTurnoverStatus(score, false);
         resetLineColor(score);
+        this.save();
       },
-      addToScore: player => {
+      addToScore(player) {
         var scoreHighlighted = null;
         if (data.isEditingScoreFrom) {
           scoreHighlighted = data.editingScoreFrom
@@ -130,6 +132,8 @@ function setupScoreboard() {
         ) {
           resetLineColor(scoreHighlighted);
         }
+
+        this.save();
       },
       beginEditingScoreFrom: score => {
         highlightLine(score.line);
@@ -147,7 +151,7 @@ function setupScoreboard() {
       isBeingDeleted: score => {
         return data.isDeletingScore && data.scoreToDelete == score;
       },
-      deleteScore: score => {
+      deleteScore(score) {
         scoreController.removeScore(score);
         scoreController.getScores().forEach(score => {
           removeLine(score.line);
@@ -155,6 +159,7 @@ function setupScoreboard() {
         })
         data.isDeletingScore = false;
         data.scoreToDelete = null;
+        this.save();
       },
       preHighlightScore: score => {
         preHighlightLine(score.line);
