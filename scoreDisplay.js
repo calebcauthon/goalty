@@ -39,7 +39,10 @@ function setupScoreboard() {
         this.save();
       },
       save() {
-        savePlayers(data.players);
+        savePlayers(data.players)
+          .then(() => {
+            saveScores(scoreController.getScores());
+          });
       },
       cancelEditing: score => {
         if (data.isEditingScoreFrom && data.editingScoreFrom == score) {

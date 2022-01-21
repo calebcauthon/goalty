@@ -13,3 +13,12 @@ function savePlayers(playerData) {
     })
   });
 }
+
+function saveScores(scoreData) {
+  return fetch('/.netlify/functions/saveScores', {
+    method: 'POST',
+    body: JSON.stringify({
+      "scores": scoreData
+    })
+  });
+}
