@@ -34,6 +34,10 @@ function setupScoreboard() {
         data.players.splice(index, 1);
         this.save();
       },
+      addNewPlayer() {
+        data.players.push({ name: 'New Player '});
+        this.save();
+      },
       save() {
         savePlayers(data.players);
       },

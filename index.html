@@ -18,7 +18,10 @@
     <div id="player-list">
       <h3>Players</h3>
       <span v-if="!isEditingPlayers" v-on:click="beginEditingPlayers()" class="clickable">edit players</span>
-      <span v-if="isEditingPlayers" v-on:click="stopEditingPlayers()" class="clickable">done editing</span>
+      <div v-if="isEditingPlayers">
+        <span v-on:click="stopEditingPlayers()" class="clickable">done editing</span>
+        | <span v-on:click="addNewPlayer()" class="clickable">add player</span>
+      </div>
       <table>
         <tr class="turnover-button">
           <td v-on:click="convertScoreToTurnover()">TURNOVER</td>
