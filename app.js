@@ -8,7 +8,7 @@ fetch('/.netlify/functions/hello')
   .then(response => {
     return response.json();
   }).then(json => {
-    players.concat(json.players);
+    data.players = json.players;
   });
 var Score = (data) => {
   var methods = {
