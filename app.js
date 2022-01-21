@@ -2,29 +2,13 @@ var scores = [];
 
 var UNKNOWN_PLAYER = { name: '?' };
 var players = [
-  { name: 'Christian' },
-  { name: 'Caleb' }, 
-  { name: 'PJ' },
-  { name: 'Spencer' },
-  { name: 'Brock' },
-  { name: 'Jonah' },
-  { name: 'Gabe' },
-  { name: 'Allen' },
-  { name: 'Monty' },
-  { name: 'Karl' },
-  { name: 'Baby T' },
-  { name: 'Taylor H' },
-  { name: 'Joe Young' },
-  { name: 'TR' },
-  { name: 'Rooster' },
-  { name: 'Marcus' }
 ];
 
 fetch('/.netlify/functions/hello')
   .then(response => {
-    console.log({ response });
-    var players = response.json();
-    console.log('players', players);
+    return response.json();
+  }).then(json => {
+    players.concat(json.players);
   });
 var Score = (data) => {
   var methods = {
