@@ -3,11 +3,11 @@ function getPlayers() {
   .then(response => {
     return response.json();
   }).then(({ players }) => {
-    return players;
-
     savePlayers().then(() => {
       console.log('saved!');
-    })
+    });
+
+    return players;
   });
 }
 
