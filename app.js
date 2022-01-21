@@ -4,8 +4,8 @@ var UNKNOWN_PLAYER = { name: '?' };
 var players = [];
 
 getPlayers()
-  .then(incomingPlayers => {
-    players.push(...incomingPlayers);
+  .then(result => {
+    players.push(...result.players);
     players.push({ name: "one more" });
     savePlayers(players);
   });
