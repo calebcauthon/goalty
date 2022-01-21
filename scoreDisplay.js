@@ -65,11 +65,12 @@ function setupScoreboard() {
         var scoreHighlighted = null;
         if (data.isEditingScoreFrom) {
           scoreHighlighted = data.editingScoreFrom
-          data.editingScoreFrom.from = player;
+          scoreController.setFrom(scoreHighlighted, player);
           data.isEditingScoreFrom = false;
           data.editingScoreFrom = null;
         } else if (data.isEditingScoreTo) {
           scoreHighlighted = data.editingScoreTo;
+          scoreController.setTo(scoreHighlighted, player);
           data.editingScoreTo.to = player;
           data.isEditingScoreTo = false;
           data.editingScoreTo = null;
@@ -136,6 +137,17 @@ function setupScoreboard() {
         scoreController.getScores().forEach(score => {
           show(score.line);
         })
+      },
+      sortStatsBy: (column) => {
+        data.totals = data.totals.sort((a,b) => {
+          if (a[column] < b[column]) {
+            return 1;
+          }
+          if (a[column] > b[column]) {
+            return -1;
+          }
+          return 0;
+        });
       }
     }
   });
