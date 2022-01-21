@@ -20,6 +20,12 @@ var players = [
   { name: 'Marcus' }
 ];
 
+fetch('/.netlify/functions/hello')
+  .then(response => {
+    console.log({ response });
+    var players = response.json();
+    console.log('players', players);
+  });
 var Score = (data) => {
   var methods = {
     needsFrom: () => self.from == UNKNOWN_PLAYER,
