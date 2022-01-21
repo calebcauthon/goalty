@@ -14,3 +14,13 @@ table tr.score td:first-child { background: greenyellow; }
 table tr.turnover td:first-child { background: red; color: white; }
 
 .clickable { cursor: pointer; color: blue; text-decoration: underline; }
+
+#scores { width: 100%; }
+#player-list,
+#score-list,
+#stat-list {
+  float: left;
+}
+
+#stat-list,
+#score-list { margin-left: 1rem; }
