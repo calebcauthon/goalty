@@ -6,7 +6,7 @@ var players = [];
 getPlayers()
   .then(players => data.players = players)
   .then(() => {
-    players.push({ name: 'add one' });
+    data.players.push({ name: 'add one' });
     savePlayers(players);
   });
 
