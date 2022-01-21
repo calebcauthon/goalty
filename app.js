@@ -6,8 +6,6 @@ var players = [];
 getPlayers()
   .then(result => {
     players.push(...result.players);
-    players.push({ name: "one more" });
-    savePlayers(players);
   });
 
 var Score = (data) => {
