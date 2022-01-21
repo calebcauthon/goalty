@@ -6,8 +6,9 @@ exports.handler = async function(event, context) {
   var result = await octokit.request('PATCH /gists/{gist_id}', {
     gist_id: gist_id,
     files: {
-      filename: "players.json",
-      content: event.body
+      "players.json": {
+        content: event.body
+      }
     }
   });
 
