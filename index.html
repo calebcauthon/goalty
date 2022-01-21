@@ -17,6 +17,8 @@
     <span class="clickable" v-on:click="showAllArrows()">show all</span>
     <div id="player-list">
       <h3>Players</h3>
+      <span v-if="!isEditingPlayers" v-on:click="beginEditingPlayers()" class="clickable">edit players</span>
+      <span v-if="isEditingPlayers" v-on:click="stopEditingPlayers()" class="clickable">done editing</span>
       <table>
         <tr class="turnover-button">
           <td v-on:click="convertScoreToTurnover()">TURNOVER</td>
@@ -24,8 +26,16 @@
         <tr class="score-button">
           <td v-on:click="convertScoreToScore()">SCORE</td>
         </tr>
-        <tr v-for="player in players" class="player">
-          <td v-on:click="addToScore(player)">{{ player.name }}</td>
+        <tr v-if="isEditingPlayers" v-for="player in players" class="player">
+          <td>
+            <input v-model="player.name" />
+            <button v-on:click="removePlayer(player)" type="button">remove</button>
+          </td>
+        </tr>
+        <tr v-if="!isEditingPlayers" v-for="player in players" class="player">
+          <td v-on:click="addToScore(player)">
+            {{ player.name }}
+          </td>
         </tr>
       </table>
     </div>

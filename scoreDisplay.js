@@ -2,6 +2,7 @@ var data = {
   totals: [],
   scores: scoreController.getScores(),
   players: playerController.getPlayers(),
+  isEditingPlayers: false,
   isEditingScoreFrom: false,
   isEditingScoreTo: false,
   editingScoreFrom: null,
@@ -21,6 +22,21 @@ function setupScoreboard() {
       }
     },
     methods: {
+      beginEditingPlayers() {
+        data.isEditingPlayers = true;
+      },
+      stopEditingPlayers() {
+        data.isEditingPlayers = false;
+        this.save();
+      },
+      removePlayer(player) {
+        var index = data.players.indexOf(player);
+        data.players.splice(index, 1);
+        this.save();
+      },
+      save() {
+        savePlayers(data.players);
+      },
       cancelEditing: score => {
         if (data.isEditingScoreFrom && data.editingScoreFrom == score) {
           data.editingScoreFrom = null;
