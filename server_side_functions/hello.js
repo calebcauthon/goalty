@@ -7,7 +7,7 @@ exports.handler = async function(event, context) {
     gist_id: gist_id
   });
 
-  var playersJson = result['files']['players.json']['content'];
+  var playersJson = result['data']['files']['players.json']['content'];
 
   return {
     statusCode: 200,
