@@ -1,7 +1,8 @@
 var data = {
+  gameId: 'game-1',
   totals: [],
-  scores: scoreController.getScores(),
-  players: playerController.getPlayers(),
+  scores: [],
+  players: [],
   isEditingPlayers: false,
   isEditingScoreFrom: false,
   isEditingScoreTo: false,
@@ -40,8 +41,20 @@ function setupScoreboard() {
       },
       save() {
         savePlayers(data.players)
-          .then(() => {
-            saveScores(GAME_ID, scoreController.getScores());
+          .then(() => saveScores(data.gameId, scoreController.getScores()));
+      },
+      load(gameId) {
+        return getPlayers()
+          .then(result => {
+            scoreController.setPlayers(result);
+            data.players.push(...scoreController.getPlayers());
+          })
+          .then(() => getScores(gameId))
+          .then(result => {
+            scoreController.setScores(result);
+            data.scores = scoreController.getScores();
+            data.totals = statsController.getTotals(scoreController.getScores());
+            this.$forceUpdate();
           });
       },
       cancelEditing: score => {

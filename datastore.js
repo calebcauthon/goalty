@@ -1,8 +1,7 @@
 function getPlayers() {
   return fetch('/.netlify/functions/getPlayers')
-  .then(response => {
-    return response.json();
-  });
+  .then(response => response.json())
+  .then(result => result.players);
 }
 
 function savePlayers(playerData) {
@@ -22,4 +21,9 @@ function saveScores(gameId, scoreData) {
       "scores": scoreData
     })
   });
+}
+
+function getScores(gameId) {
+  return fetch(`/.netlify/functions/getScores?gameId=${gameId}`)
+  .then(response => response.json());
 }

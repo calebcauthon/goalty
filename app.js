@@ -1,13 +1,5 @@
-var GAME_ID = "game-1";
-var scores = [];
-
 var UNKNOWN_PLAYER = { name: '?' };
 var players = [];
-
-getPlayers()
-  .then(result => {
-    players.push(...result.players);
-  })
 
 var Score = (data) => {
   var methods = {
@@ -31,7 +23,7 @@ var Score = (data) => {
 
 var statsController = {
   getTotals: (scores) => {
-    return players.map(player => {
+    return scoreController.getPlayers().map(player => {
       var assists = scores.filter(s => !s.isTurnover).filter(s => s.from.name == player.name).length;
       var goals = scores.filter(s => !s.isTurnover).filter(s => s.to.name == player.name).length;
       var turnovers = scores.filter(s => s.isTurnover).filter(s => s.to.name == player.name || s.from.name == player.name).length;
@@ -47,32 +39,41 @@ var statsController = {
 }
 
 var scoreController = {
-  getScores: () => scores,
+  setPlayers: (players) => {
+    this.players = players;
+  },
+  getPlayers: () => {
+    return this.players;
+  },
+  setScores: (scores) => {
+    this.scores = scores;
+  },
+  getScores: () => this.scores,
   resetSequenceNumbers: () => {
     var index = 1;
-    scores.forEach(score => {
+    this.scores.forEach(score => {
       score.setSequence(index);
       index++;
     });
   },
   removeScore: score => {
-    var index = scores.indexOf(score);
-    scores.splice(index, 1);
+    var index = this.scores.indexOf(score);
+    this.scores.splice(index, 1);
     removeLine(score.line);
-    scoreController.resetSequenceNumbers(scores);
+    scoreController.resetSequenceNumbers(this.scores);
 
     data.totals = statsController.getTotals(scoreController.getScores());
   },
   addScore: data => {
     var score = Score(data);
-    scores.push(score);
-    score.setSequence(scores.length);
+    this.scores.push(score);
+    score.setSequence(this.scores.length);
     data.totals = statsController.getTotals(scoreController.getScores());
 
     return score;
   },
   getMostRecentScore: () => {
-    var recentScore = scores[scores.length - 1];
+    var recentScore = this.scores[this.scores.length - 1];
     return recentScore;
   },
   setFrom: (score, player) => {
