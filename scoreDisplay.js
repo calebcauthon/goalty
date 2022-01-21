@@ -53,12 +53,12 @@ function setupScoreboard() {
       },
       convertScoreToTurnover: () => {
         var score = data.editingScoreFrom || data.editingScoreTo || scoreController.getMostRecentScore();
-        score.isTurnover = true;
+        scoreController.setTurnoverStatus(score, true);
         showLineAsTurnover(score.line);
       },
       convertScoreToScore: () => {
         var score = data.editingScoreFrom || data.editingScoreTo || scoreController.getMostRecentScore();
-        score.isTurnover = false;
+        scoreController.setTurnoverStatus(score, false);
         resetLineColor(score);
       },
       addToScore: player => {

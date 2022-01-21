@@ -6,7 +6,6 @@ var players = [
   { name: 'Caleb' }, 
   { name: 'PJ' },
   { name: 'Spencer' },
-  { name: 'PJ' },
   { name: 'Brock' },
   { name: 'Jonah' },
   { name: 'Gabe' },
@@ -44,14 +43,15 @@ var Score = (data) => {
 var statsController = {
   getTotals: (scores) => {
     return players.map(player => {
-      var assists = scores.filter(s => s.from.name == player.name).length;
-      var goals = scores.filter(s => s.to.name == player.name).length;
+      var assists = scores.filter(s => !s.isTurnover).filter(s => s.from.name == player.name).length;
+      var goals = scores.filter(s => !s.isTurnover).filter(s => s.to.name == player.name).length;
+      var turnovers = scores.filter(s => s.isTurnover).filter(s => s.to.name == player.name || s.from.name == player.name).length;
 
       return {
         player,
         goals,
         assists,
-        //turns
+        turnovers
       };
     });
   }
@@ -92,6 +92,10 @@ var scoreController = {
   },
   setTo: (score, player) => {
     score.to = player;
+    data.totals = statsController.getTotals(scoreController.getScores());
+  },
+  setTurnoverStatus: (score, status) => {
+    score.isTurnover = status;
     data.totals = statsController.getTotals(scoreController.getScores());
   }
 };
