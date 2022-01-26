@@ -46,7 +46,7 @@ var scoreController = {
     return this.players;
   },
   setScores: (scores) => {
-    this.scores = scores;
+    this.scores = scores.map(s => Score(s));
   },
   getScores: () => this.scores,
   resetSequenceNumbers: () => {
