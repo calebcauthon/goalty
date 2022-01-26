@@ -8,10 +8,10 @@ exports.handler = async function(event, context) {
     gist_id: gist_id
   });
 
-  var playersJson = result['data']['files'][`players-${gameId}.json`]['content'];
+  var content = result['data']['files'][`players-${gameId}.json`]['content'];
 
   return {
     statusCode: 200,
-    body: playersJson,
+    body: content,
   };
 }

@@ -1,30 +1,37 @@
+function getGist(filename) {
+  return fetch(`/.netlify/functions/getGist?filename=${filename}`)
+    .then(response => response.json())
+}
+
+function saveGist(filename, content) {
+  return fetch(`/.netlify/functions/saveGist`, {
+    method: 'POST',
+    body: JSON.stringify({
+      "filename": filename,
+      "content": content
+    })
+  });
+}
+
 function getPlayers(gameId) {
-  return fetch(`/.netlify/functions/getPlayers?gameId=${gameId}`)
-  .then(response => response.json())
-  .then(result => result.players);
+  return getGist(`players-${gameId}.json`)
+    .then(result => result.players);
 }
 
 function savePlayers(playerData, gameId) {
-  return fetch(`/.netlify/functions/savePlayers`, {
-    method: 'POST',
-    body: JSON.stringify({
-      "players": { players: playerData },
-      "gameId": gameId
-    })
+  return saveGist(`players-${gameId}.json`, {
+    players: playerData,
+    gameId: gameId
   });
 }
 
 function saveScores(gameId, scoreData) {
-  return fetch('/.netlify/functions/saveScores', {
-    method: 'POST',
-    body: JSON.stringify({
-      "gameId": gameId,
-      "scores": scoreData
-    })
+  return saveGist(`scores-${gameId}.json`, {
+    "gameId": gameId,
+    "scores": scoreData
   });
 }
 
 function getScores(gameId) {
-  return fetch(`/.netlify/functions/getScores?gameId=${gameId}`)
-  .then(response => response.json());
+  return getGist(`scores-${gameId}.json`)
 }
