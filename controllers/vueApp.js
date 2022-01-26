@@ -18,6 +18,12 @@ function setupScoreboard() {
         return marked(this.input, { sanitize: true });
       }
     },
+    mounted() {
+      var queryString = window.location.search;
+      var params = new URLSearchParams(queryString);
+      var gameId = params.get("gameId");
+      this.load(gameId);
+    },
     methods: {
       beginEditingPlayers() {
         data.isEditingPlayers = true;

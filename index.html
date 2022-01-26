@@ -20,7 +20,6 @@
   <div id="scores">
     <span class="clickable" v-on:click="hideAllArrows()">hide all</span> |
     <span class="clickable" v-on:click="showAllArrows()">show all</span>
-    <input v-model="gameId" /><button v-on:click="load(gameId)" type="button">Load</button>
     <div id="player-list">
       <h3>Players</h3>
       <span v-if="!isEditingPlayers" v-on:click="beginEditingPlayers()" class="clickable">edit players</span>
