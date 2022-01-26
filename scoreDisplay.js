@@ -18,6 +18,17 @@ function setupScoreboard() {
     el: "#scores",
     data,
     computed: {
+      orderedPlayers() {
+        return data.players.map(x => x).sort((p1, p2) => {
+          if (p1.name < p2.name) {
+            return -1;
+          } else if (p2.name > p1.name) {
+            return 1;
+          } else {
+            return 0;
+          }
+        })
+      },
       compiledMarkdown: function() {
         return marked(this.input, { sanitize: true });
       }

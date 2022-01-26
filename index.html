@@ -36,7 +36,7 @@
             <button v-on:click="removePlayer(player)" type="button">remove</button>
           </td>
         </tr>
-        <tr v-if="!isEditingPlayers" v-for="player in players" class="player">
+        <tr v-if="!isEditingPlayers" v-for="player in orderedPlayers" class="player">
           <td v-on:click="addToScore(player)">
             {{ player.name }}
           </td>
