@@ -9,8 +9,8 @@ var Score = (data) => {
   };
 
   var self = {
-    isTurnover: false,
-    sequence: 0,
+    isTurnover: data.isTurnover || false,
+    sequence: data.sequence || 0,
     line: data.line,
     lineCoordinates: data.lineCoordinates || { start: { x: 0, y: 0 }, end: { x: 0, y: 0 } },
     from: data.from || UNKNOWN_PLAYER,
