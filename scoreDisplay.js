@@ -40,11 +40,12 @@ function setupScoreboard() {
         this.save();
       },
       save() {
-        savePlayers(data.players)
+        savePlayers(data.players, data.gameId)
           .then(() => saveScores(data.gameId, scoreController.getScores()));
       },
       load(gameId) {
-        return getPlayers()
+        data.gameId = gameId;
+        return getPlayers(gameId)
           .then(result => {
             scoreController.setPlayers(result);
             data.players.push(...scoreController.getPlayers());

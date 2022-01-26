@@ -1,14 +1,15 @@
-function getPlayers() {
-  return fetch('/.netlify/functions/getPlayers')
+function getPlayers(gameId) {
+  return fetch(`/.netlify/functions/getPlayers?gameId=${gameId}`)
   .then(response => response.json())
   .then(result => result.players);
 }
 
-function savePlayers(playerData) {
-  return fetch('/.netlify/functions/savePlayers', {
+function savePlayers(playerData, gameId) {
+  return fetch(`/.netlify/functions/savePlayers`, {
     method: 'POST',
     body: JSON.stringify({
-      "players": playerData
+      "players": { players: playerData },
+      "gameId": gameId
     })
   });
 }
