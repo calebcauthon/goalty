@@ -1,12 +1,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <script type="text/javascript" src="controllers/datastore.js"></script>
 
-<div id="choose-game-app">
-  <select v-model="selectedGame">
-    <option v-bind:value="game" v-for="game in games">{{ game.name }}</option>
-  </select>
-  <button v-on:click="load(selectedGame)">Go</button>
-</div>
+
 
 
 <script type="text/javascript">
@@ -25,8 +20,5 @@
     data,
   });
  
-  getGist(`all-games.json`)
-    .then(games => {
-      data.games = games;
-    })
+  
 </script>
