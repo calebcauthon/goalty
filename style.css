@@ -48,7 +48,7 @@ table tr.turnover td:first-child { background: red; color: white; }
 
 #game {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 50% 25% 25%;
   grid-template-rows: 100%;
 }
 #canvas-container {
@@ -61,6 +61,13 @@ table tr.turnover td:first-child { background: red; color: white; }
 #scores-container {
   grid-column-start: 2;
   grid-column-end: col2-end;
+  grid-row-start: 1;
+  grid-row-end: span 2;
+}
+
+#stat-list {
+  grid-column-start: 3;
+  grid-column-end: col3-end;
   grid-row-start: 1;
   grid-row-end: span 2;
 }

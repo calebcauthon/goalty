@@ -5,6 +5,19 @@ Vue.component('stats', {
 
     };
   },
+  methods: {
+    sortStatsBy: (column) => {
+      this.totals = this.totals.sort((a,b) => {
+        if (a[column] < b[column]) {
+          return 1;
+        }
+        if (a[column] > b[column]) {
+          return -1;
+        }
+        return 0;
+      });
+    }
+  },
   template: `
     <div id="stat-list">
       <h3>Stats</h3>
