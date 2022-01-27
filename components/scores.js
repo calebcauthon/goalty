@@ -1,5 +1,6 @@
 Vue.component('scores', {
   props: ['players', 'scores'],
+  emits: ['edit'],
   data: function () {
     return {
       isEditingPlayers: false,
@@ -51,7 +52,6 @@ Vue.component('scores', {
       })
       this.isDeletingScore = false;
       this.scoreToDelete = null;
-      this.save();
     },
     preHighlightScore: score => {
       preHighlightLine(score.line);
@@ -97,29 +97,26 @@ Vue.component('scores', {
       var score = this.editingScoreFrom || this.editingScoreTo || scoreController.getMostRecentScore();
       scoreController.setTurnoverStatus(score, true);
       showLineAsTurnover(score.line);
-      this.save();
+      this.$emit('edit');
     },
     convertScoreToScore() {
       var score = this.editingScoreFrom || this.editingScoreTo || scoreController.getMostRecentScore();
       scoreController.setTurnoverStatus(score, false);
       resetLineColor(score);
-      this.save();
+      this.$emit('edit');
     },
     beginEditingPlayers() {
       this.isEditingPlayers = true;
     },
     stopEditingPlayers() {
       this.isEditingPlayers = false;
-      this.save();
     },
     removePlayer(player) {
       var index = this.players.indexOf(player);
       this.players.splice(index, 1);
-      this.save();
     },
     addNewPlayer() {
       this.players.push({ name: 'New Player '});
-      this.save();
     },
     hideAllArrows: () => {
       scoreController.getScores().forEach(score => {
@@ -142,12 +139,6 @@ Vue.component('scores', {
         | <span v-on:click="addNewPlayer()" class="clickable">add player</span>
       </div>
       <table>
-        <tr class="turnover-button">
-          <td v-on:click="convertScoreToTurnover()">TURNOVER</td>
-        </tr>
-        <tr class="score-button">
-          <td v-on:click="convertScoreToScore()">SCORE</td>
-        </tr>
         <tr v-if="isEditingPlayers" v-for="player in players" class="player">
           <td>
             <input v-model="player.name" />
@@ -184,7 +175,10 @@ Vue.component('scores', {
             turnover: score.isTurnover
           }"
           v-for="(score, index) in scores">
-          <td>{{ score.sequence }}</td>
+
+          <td v-if="!score.isTurnover" v-on:click="convertScoreToTurnover()">{{ score.sequence }}</td>
+          <td v-if="score.isTurnover" v-on:click="convertScoreToScore()">{{ score.sequence }}</td>
+
           <td
             v-bind:class="{ isBeingEdited: isBeingEditedFrom(score) }"
             v-on:click="beginEditingScoreFrom(score)">{{ score.from.name }}</td>

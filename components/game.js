@@ -74,6 +74,10 @@ Vue.component('game', {
       }
 
       this.save();
+    },
+    refreshTotals() {
+      this.scores = scoreController.getScores();
+      this.totals = statsController.getTotals(this.scores, this.players);
     }
   },
   template: `
@@ -81,7 +85,11 @@ Vue.component('game', {
   <div id="canvas-container">
     <canvas id="c" width=800 height=1000></canvas>
   </div>
-  <scores v-if="loaded" v-bind:scores="scores" v-bind:players="players"></scores>
+  <scores
+    @edit="refreshTotals()"
+    v-if="loaded"
+    v-bind:scores="scores"
+    v-bind:players="players"></scores>
   <stats
     v-if="loaded"
     v-bind:totals="totals"></stats>

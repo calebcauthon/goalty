@@ -21,14 +21,11 @@ var scoreController = {
     this.scores.splice(index, 1);
     removeLine(score.line);
     scoreController.resetSequenceNumbers(this.scores);
-
-    data.totals = statsController.getTotals(scoreController.getScores(), this.players);
   },
   addScore: data => {
     var score = Score(data);
     this.scores.push(score);
     score.setSequence(this.scores.length);
-    data.totals = statsController.getTotals(scoreController.getScores(), this.players);
 
     return score;
   },
@@ -38,14 +35,11 @@ var scoreController = {
   },
   setFrom: (score, player) => {
     score.from = player;
-    data.totals = statsController.getTotals(scoreController.getScores(), this.players);
   },
   setTo: (score, player) => {
     score.to = player;
-    data.totals = statsController.getTotals(scoreController.getScores(), this.players);
   },
   setTurnoverStatus: (score, status) => {
     score.isTurnover = status;
-    data.totals = statsController.getTotals(scoreController.getScores(), this.players);
   }
 };

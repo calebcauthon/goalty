@@ -1,5 +1,5 @@
 Vue.component('game-loader', {
- emits: ['selectGame'],
+  emits: ['selectGame'],
   mounted() {
     getGist(`all-games.json`)
       .then(games => {

@@ -2,21 +2,23 @@ Vue.component('stats', {
   props: ['totals'],
   data: function () {
     return {
-
+      column: 'assists'
     };
   },
-  methods: {
-    sortStatsBy: (column) => {
-      this.totals = this.totals.sort((a,b) => {
-        if (a[column] < b[column]) {
+  computed: {
+    sortedTotals() {
+      return this.totals.sort((a,b) => {
+        if (a[this.column] < b[this.column]) {
           return 1;
         }
-        if (a[column] > b[column]) {
+        if (a[this.column] > b[this.column]) {
           return -1;
         }
         return 0;
       });
     }
+  },
+  methods: {
   },
   template: `
     <div id="stat-list">
@@ -24,11 +26,11 @@ Vue.component('stats', {
       <table>
         <tr>
           <td>Name</td>
-          <td class="clickable" v-on:click="sortStatsBy('assists')">Assists</td>
-          <td class="clickable" v-on:click="sortStatsBy('goals')">Goals</td>
-          <td class="clickable" v-on:click="sortStatsBy('turnovers')">Turnovers</td>
+          <td class="clickable" v-on:click="column = 'assists'">Assists</td>
+          <td class="clickable" v-on:click="column = 'goals'">Goals</td>
+          <td class="clickable" v-on:click="column = 'turnovers'">Turnovers</td>
         </tr>
-        <tr v-for="row in totals">
+        <tr v-for="row in sortedTotals">
           <td>{{ row.player.name }}</td>
           <td>{{ row.assists }}</td>
           <td>{{ row.goals }}</td>
