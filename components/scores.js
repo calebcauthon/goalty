@@ -134,8 +134,6 @@ Vue.component('scores', {
   },
   template: `
   <div id="scores-container">
-    <span class="clickable" v-on:click="hideAllArrows()">hide all</span> |
-    <span class="clickable" v-on:click="showAllArrows()">show all</span>
     <div id="player-list">
       <h3>Players</h3>
       <span v-if="!isEditingPlayers" v-on:click="beginEditingPlayers()" class="clickable">edit players</span>
@@ -165,6 +163,8 @@ Vue.component('scores', {
     </div>
     <div id="score-list">
       <h3>Scores</h3>
+      <span class="clickable" v-on:click="hideAllArrows()">hide all</span> |
+      <span class="clickable" v-on:click="showAllArrows()">show all</span>
       <table>
         <tr>
           <td>#</td>
