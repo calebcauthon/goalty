@@ -42,40 +42,6 @@ Vue.component('game', {
           this.$forceUpdate();
         });
     },
-    addToScore(player) {
-      var scoreHighlighted = null;
-      if (this.isEditingScoreFrom) {
-        scoreHighlighted = this.editingScoreFrom
-        scoreController.setFrom(scoreHighlighted, player);
-        this.isEditingScoreFrom = false;
-        this.editingScoreFrom = null;
-      } else if (this.isEditingScoreTo) {
-        scoreHighlighted = this.editingScoreTo;
-        scoreController.setTo(scoreHighlighted, player);
-        this.editingScoreTo.to = player;
-        this.isEditingScoreTo = false;
-        this.editingScoreTo = null;
-      } else {
-        var score = scoreController.getMostRecentScore();
-        scoreHighlighted = score;
-        if (score.needsFrom()) {
-          scoreController.setFrom(score, player);
-        } else if (score.needsTo()) {
-          scoreController.setTo(score, player);
-        }
-      }
-
-      if (
-        this.editingScoreFrom != scoreHighlighted &&
-        this.editingScoreTo != scoreHighlighted &&
-        this.scoreToDelete != scoreHighlighted &&
-        this.scoreHighlighted != scoreHighlighted
-      ) {
-        resetLineColor(scoreHighlighted);
-      }
-
-      this.save();
-    },
     refreshTotals() {
       this.scores = scoreController.getScores();
       this.totals = statsController.getTotals(this.scores, this.players);
