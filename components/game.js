@@ -1,9 +1,198 @@
 Vue.component('game', {
   props: ['gameData'],
+  watch: {
+    'gameData': 'newGame'
+  },
   data: function () {
     return {
-      gameData: null,
-      count: 0,
+      gameId: 'game-1',
+      totals: [],
+      scores: [],
+      players: [],
+      isEditingPlayers: false,
+      isEditingScoreFrom: false,
+      isEditingScoreTo: false,
+      editingScoreFrom: null,
+      editingScoreTo: null,
+      isDeletingScore: false,
+      scoreToDelete: null,
+      scoreHighlighted: null,
+      preHighlightedScore: null
+    }
+  },
+  methods: {
+    newGame(gameData) {
+      this.load(gameData.gameId);
+    },
+    beginEditingPlayers() {
+      this.isEditingPlayers = true;
+    },
+    stopEditingPlayers() {
+      this.isEditingPlayers = false;
+      this.save();
+    },
+    removePlayer(player) {
+      var index = this.players.indexOf(player);
+      this.players.splice(index, 1);
+      this.save();
+    },
+    addNewPlayer() {
+      this.players.push({ name: 'New Player '});
+      this.save();
+    },
+    save() {
+      savePlayers(this.players, this.gameId)
+        .then(() => saveScores(this.gameId, scoreController.getScores()));
+    },
+    load(gameId) {
+      this.gameId = gameId;
+      return getPlayers(gameId)
+        .then(result => {
+          scoreController.setPlayers(result);
+          this.players.push(...scoreController.getPlayers());
+        })
+        .then(() => getScores(gameId))
+        .then(result => {
+          scoreController.setScores(result);
+          this.scores = scoreController.getScores();
+          this.totals = statsController.getTotals(scoreController.getScores(), this.players);
+
+          this.scores.forEach(score => drawScore(score));
+          this.$forceUpdate();
+        });
+    },
+    cancelEditing: score => {
+      if (this.isEditingScoreFrom && this.editingScoreFrom == score) {
+        this.editingScoreFrom = null;
+        this.isEditingScoreFrom = false;
+      }
+
+      if (this.isEditingScoreTo && this.editingScoreTo == score) {
+        this.editingScoreTo = null;
+        this.isEditingScoreTo = false;
+      }
+
+      if (this.isDeletingScore && this.scoreToDelete == score) {
+        this.scoreToDelete = null;
+        this.isDeletingScore = false;
+      }
+
+      if (this.scoreHighlighted == score) {
+        this.scoreHighlighted = null;
+      }
+    },
+    isBeingEditedFrom: score => {
+      if (this.editingScoreFrom == score) {
+        return true;
+      }
+    },
+    isBeingEditedTo: score => {
+      if (this.editingScoreTo == score) {
+        return true;
+      }
+    },
+    convertScoreToTurnover() {
+      var score = this.editingScoreFrom || this.editingScoreTo || scoreController.getMostRecentScore();
+      scoreController.setTurnoverStatus(score, true);
+      showLineAsTurnover(score.line);
+      this.save();
+    },
+    convertScoreToScore() {
+      var score = this.editingScoreFrom || this.editingScoreTo || scoreController.getMostRecentScore();
+      scoreController.setTurnoverStatus(score, false);
+      resetLineColor(score);
+      this.save();
+    },
+    addToScore(player) {
+      var scoreHighlighted = null;
+      if (this.isEditingScoreFrom) {
+        scoreHighlighted = this.editingScoreFrom
+        scoreController.setFrom(scoreHighlighted, player);
+        this.isEditingScoreFrom = false;
+        this.editingScoreFrom = null;
+      } else if (this.isEditingScoreTo) {
+        scoreHighlighted = this.editingScoreTo;
+        scoreController.setTo(scoreHighlighted, player);
+        this.editingScoreTo.to = player;
+        this.isEditingScoreTo = false;
+        this.editingScoreTo = null;
+      } else {
+        var score = scoreController.getMostRecentScore();
+        scoreHighlighted = score;
+        if (score.needsFrom()) {
+          scoreController.setFrom(score, player);
+        } else if (score.needsTo()) {
+          scoreController.setTo(score, player);
+        }
+      }
+
+      if (
+        this.editingScoreFrom != scoreHighlighted &&
+        this.editingScoreTo != scoreHighlighted &&
+        this.scoreToDelete != scoreHighlighted &&
+        this.scoreHighlighted != scoreHighlighted
+      ) {
+        resetLineColor(scoreHighlighted);
+      }
+
+      this.save();
+    },
+    beginEditingScoreFrom: score => {
+      highlightLine(score.line);
+      this.isEditingScoreFrom = true;
+      this.editingScoreFrom = score;        
+    },
+    beginEditingScoreTo: score => {
+      this.isEditingScoreTo = true;
+      this.editingScoreTo = score;        
+    },
+    preDeleteScore: score => {
+      this.isDeletingScore = true;
+      this.scoreToDelete = score;
+    },
+    isBeingDeleted: score => {
+      return this.isDeletingScore && this.scoreToDelete == score;
+    },
+    deleteScore(score) {
+      scoreController.removeScore(score);
+      scoreController.getScores().forEach(score => {
+        removeLine(score.line);
+        drawScore(score);
+      })
+      this.isDeletingScore = false;
+      this.scoreToDelete = null;
+      this.save();
+    },
+    preHighlightScore: score => {
+      preHighlightLine(score.line);
+      this.preHighlightedScore = score;
+    },
+    unPreHighlightScore: score => {
+      if (this.preHighlightedScore == score) {
+        this.preHighlightedScore = null;
+        resetLineColor(score);
+      }
+    },
+    hideAllArrows: () => {
+      scoreController.getScores().forEach(score => {
+        hide(score.line);
+      })
+    },
+    showAllArrows: () => {
+      scoreController.getScores().forEach(score => {
+        show(score.line);
+      })
+    },
+    sortStatsBy: (column) => {
+      this.totals = this.totals.sort((a,b) => {
+        if (a[column] < b[column]) {
+          return 1;
+        }
+        if (a[column] > b[column]) {
+          return -1;
+        }
+        return 0;
+      });
     }
   },
   template: `

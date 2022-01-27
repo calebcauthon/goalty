@@ -12,7 +12,7 @@ const ChooseGame = {
   template: `
     <div>test
       <game-loader @choose="selectGame($event)"></game-loader>
-      <game v-bind:game-data="currentGame" v-if="currentGame"></game>
+      <game v-bind:game-data="currentGame"></game>
     </div>`
   };
 const NewGame = { template: '<div>bar</div>' };
