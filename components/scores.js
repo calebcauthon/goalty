@@ -1,6 +1,15 @@
 Vue.component('scores', {
   props: ['players', 'scores'],
   emits: ['edit', 'selectScoreBox'],
+  watch: {
+    'scores': function() {
+      var recentScore = this.scores[this.scores.length-1];
+      if (recentScore.needsFrom() && recentScore.needsTo()) {
+        this.beginEditingScoreFrom(recentScore);
+        this.beginEditingScoreTo(recentScore);
+      }
+    }
+  },
   data: function () {
     return {
       isEditingPlayers: false,
