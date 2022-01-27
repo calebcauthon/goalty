@@ -48,7 +48,7 @@ table tr.turnover td:first-child { background: red; color: white; }
 
 #game {
   display: grid;
-  grid-template-columns: 50% 25% 25%;
+  grid-template-columns: 800px 1fr 1fr;
   grid-template-rows: 100%;
 }
 #canvas-container {
