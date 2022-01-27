@@ -22,6 +22,9 @@ Vue.component('game', {
   },
   methods: {
     newGame(gameData) {
+      window.canvas = new fabric.Canvas('c');
+      setupLineDrawing();
+      drawField();
       this.load(gameData.gameId);
     },
     beginEditingPlayers() {
@@ -198,10 +201,10 @@ Vue.component('game', {
   template: `
 <div id="game">
   {{ gameData }}
-  <div style="float: left;">
+  <div id="canvas-container">
     <canvas id="c" width=800 height=1000></canvas>
   </div>
-  <div>
+  <div id="scores-container">
     <span class="clickable" v-on:click="hideAllArrows()">hide all</span> |
     <span class="clickable" v-on:click="showAllArrows()">show all</span>
     <div id="player-list">

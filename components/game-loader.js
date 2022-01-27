@@ -15,6 +15,7 @@ Vue.component('game-loader', {
   },
   template: `
   <div id="choose-game-app">
+    Choose game: 
     <select v-model="selectedGame">
       <option v-bind:value="game" v-for="game in games">{{ game.name }}</option>
     </select>

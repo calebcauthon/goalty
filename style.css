@@ -24,3 +24,43 @@ table tr.turnover td:first-child { background: red; color: white; }
 
 #stat-list,
 #score-list { margin-left: 1rem; }
+
+#choose-game-container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: [nav] 10% [main] 90%;
+}
+
+#header-area {
+  grid-row-start: nav;
+  grid-row-end: span nav;
+  grid-column-start: 1;
+  grid-column-end: span 1;
+}
+
+#content-area {
+  grid-row-start: main;
+  grid-row-end: span main;
+  grid-column-start: 1;
+  grid-column-end: span 1; 
+}
+
+#game {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 100%;
+}
+#canvas-container {
+  grid-column-start: 1;
+  grid-column-end: col1-end;
+  grid-row-start: 1;
+  grid-row-end: span 2;
+}
+
+#scores-container {
+  grid-column-start: 2;
+  grid-column-end: col2-end;
+  grid-row-start: 1;
+  grid-row-end: span 2;
+}

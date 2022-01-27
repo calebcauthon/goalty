@@ -10,16 +10,19 @@ const ChooseGame = {
     }
   },
   template: `
-    <div>test
-      <game-loader @choose="selectGame($event)"></game-loader>
-      <game v-bind:game-data="currentGame"></game>
-    </div>`
+    <div id="choose-game-container">
+      <div id="header-area">
+        <game-loader @choose="selectGame($event)"></game-loader>
+      </div>
+      <div id="content-area">
+        <game v-bind:game-data="currentGame"></game>
+      </div>
+    </div>
+    `
   };
-const NewGame = { template: '<div>bar</div>' };
 
 const routes = [
-  { path: '/choose', component: ChooseGame },
-  { path: '/new', component: NewGame }
+  { path: '/home', component: ChooseGame },
 ];
 
 const router = new VueRouter({
