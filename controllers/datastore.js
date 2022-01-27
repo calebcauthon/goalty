@@ -26,10 +26,7 @@ function savePlayers(playerData, gameId) {
 }
 
 function saveScores(gameId, scoreData) {
-  return saveGist(`scores-${gameId}.json`, {
-    "gameId": gameId,
-    "scores": scoreData
-  });
+  return saveGist(`scores-${gameId}.json`, scoreData);
 }
 
 function getScores(gameId) {

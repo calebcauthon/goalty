@@ -5,6 +5,7 @@ Vue.component('game', {
   },
   data: function () {
     return {
+      hookFn: [],
       gameId: 'game-1',
       totals: [],
       scores: [],
@@ -31,8 +32,8 @@ Vue.component('game', {
           this.players.push(...scoreController.getPlayers());
         })
         .then(() => getScores(gameId))
-        .then(result => {
-          scoreController.setScores(result);
+        .then(scores => {
+          scoreController.setScores(scores);
           this.scores = scoreController.getScores();
           this.totals = statsController.getTotals(scoreController.getScores(), this.players);
 
@@ -78,6 +79,15 @@ Vue.component('game', {
     refreshTotals() {
       this.scores = scoreController.getScores();
       this.totals = statsController.getTotals(this.scores, this.players);
+    },
+    attachHookedToNextPlayerSelection(hookFn) {
+      this.hookFn.push(hookFn);
+    },
+    onPlayerSelect(player) {
+      if (this.hookFn.length > 0) {
+        var hook = this.hookFn.shift();
+        hook(player);
+      }
     }
   },
   template: `
@@ -87,10 +97,12 @@ Vue.component('game', {
   </div>
   <scores
     @edit="refreshTotals()"
+    @selectScoreBox="attachHookedToNextPlayerSelection($event.hook)"
     v-if="loaded"
     v-bind:scores="scores"
     v-bind:players="players"></scores>
   <stats
+    @select="onPlayerSelect($event)"
     v-if="loaded"
     v-bind:totals="totals"></stats>
 </div>

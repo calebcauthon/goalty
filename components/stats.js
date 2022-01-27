@@ -1,4 +1,5 @@
 Vue.component('stats', {
+  emits: ['select'],
   props: ['totals'],
   data: function () {
     return {
@@ -18,8 +19,6 @@ Vue.component('stats', {
       });
     }
   },
-  methods: {
-  },
   template: `
     <div id="stat-list">
       <h3>Stats</h3>
@@ -31,7 +30,9 @@ Vue.component('stats', {
           <td class="clickable" v-on:click="column = 'turnovers'">Turnovers</td>
         </tr>
         <tr v-for="row in sortedTotals">
-          <td>{{ row.player.name }}</td>
+          <td
+            v-on:click="$emit('select', row.player)"
+          >{{ row.player.name }}</td>
           <td>{{ row.assists }}</td>
           <td>{{ row.goals }}</td>
           <td>{{ row.turnovers }}</td>

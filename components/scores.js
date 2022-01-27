@@ -1,6 +1,6 @@
 Vue.component('scores', {
   props: ['players', 'scores'],
-  emits: ['edit'],
+  emits: ['edit', 'selectScoreBox'],
   data: function () {
     return {
       isEditingPlayers: false,
@@ -28,14 +28,21 @@ Vue.component('scores', {
     },
   },
   methods: {
-    beginEditingScoreFrom: score => {
+    beginEditingScoreFrom(score) {
+      var hook = player => {
+        scoreController.setFrom(score, player);
+        resetLineColor(score);
+      };
       highlightLine(score.line);
-      this.isEditingScoreFrom = true;
-      this.editingScoreFrom = score;        
+      this.$emit('selectScoreBox', { score, hook });
     },
-    beginEditingScoreTo: score => {
-      this.isEditingScoreTo = true;
-      this.editingScoreTo = score;        
+    beginEditingScoreTo(score) {
+      var hook = player => {
+        scoreController.setTo(score, player);
+        resetLineColor(score);
+      };
+      highlightLine(score.line);
+      this.$emit('selectScoreBox', { score, hook });
     },
     preDeleteScore: score => {
       this.isDeletingScore = true;
@@ -64,24 +71,6 @@ Vue.component('scores', {
       }
     },
     cancelEditing: score => {
-      if (this.isEditingScoreFrom && this.editingScoreFrom == score) {
-        this.editingScoreFrom = null;
-        this.isEditingScoreFrom = false;
-      }
-
-      if (this.isEditingScoreTo && this.editingScoreTo == score) {
-        this.editingScoreTo = null;
-        this.isEditingScoreTo = false;
-      }
-
-      if (this.isDeletingScore && this.scoreToDelete == score) {
-        this.scoreToDelete = null;
-        this.isDeletingScore = false;
-      }
-
-      if (this.scoreHighlighted == score) {
-        this.scoreHighlighted = null;
-      }
     },
     isBeingEditedFrom: score => {
       if (this.editingScoreFrom == score) {
@@ -93,14 +82,12 @@ Vue.component('scores', {
         return true;
       }
     },
-    convertScoreToTurnover() {
-      var score = this.editingScoreFrom || this.editingScoreTo || scoreController.getMostRecentScore();
+    convertScoreToTurnover(score) {
       scoreController.setTurnoverStatus(score, true);
       showLineAsTurnover(score.line);
       this.$emit('edit');
     },
-    convertScoreToScore() {
-      var score = this.editingScoreFrom || this.editingScoreTo || scoreController.getMostRecentScore();
+    convertScoreToScore(score) {
       scoreController.setTurnoverStatus(score, false);
       resetLineColor(score);
       this.$emit('edit');
@@ -131,27 +118,6 @@ Vue.component('scores', {
   },
   template: `
   <div id="scores-container">
-    <div id="player-list">
-      <h3>Players</h3>
-      <span v-if="!isEditingPlayers" v-on:click="beginEditingPlayers()" class="clickable">edit players</span>
-      <div v-if="isEditingPlayers">
-        <span v-on:click="stopEditingPlayers()" class="clickable">done editing</span>
-        | <span v-on:click="addNewPlayer()" class="clickable">add player</span>
-      </div>
-      <table>
-        <tr v-if="isEditingPlayers" v-for="player in players" class="player">
-          <td>
-            <input v-model="player.name" />
-            <button v-on:click="removePlayer(player)" type="button">remove</button>
-          </td>
-        </tr>
-        <tr v-if="!isEditingPlayers" v-for="player in orderedPlayers" class="player">
-          <td v-on:click="addToScore(player)">
-            {{ player.name }}
-          </td>
-        </tr>
-      </table>
-    </div>
     <div id="score-list">
       <h3>Scores</h3>
       <span class="clickable" v-on:click="hideAllArrows()">hide all</span> |
@@ -176,8 +142,8 @@ Vue.component('scores', {
           }"
           v-for="(score, index) in scores">
 
-          <td v-if="!score.isTurnover" v-on:click="convertScoreToTurnover()">{{ score.sequence }}</td>
-          <td v-if="score.isTurnover" v-on:click="convertScoreToScore()">{{ score.sequence }}</td>
+          <td v-if="!score.isTurnover" v-on:click="convertScoreToTurnover(score)">{{ score.sequence }}</td>
+          <td v-if="score.isTurnover" v-on:click="convertScoreToScore(score)">{{ score.sequence }}</td>
 
           <td
             v-bind:class="{ isBeingEdited: isBeingEditedFrom(score) }"
